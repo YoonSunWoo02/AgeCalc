@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>AgeCalc - 정확한 만나이 계산기</title>
+    <title>AgeCalc - 정확한 만나이 계산기 및 생애 분석</title>
 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8606694581555602" crossorigin="anonymous"></script>
 
@@ -29,8 +29,10 @@
         body { font-family: "Inter", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif }
         .material-symbols-outlined { font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24 }
         .keep-all { word-break: keep-all; break-word: keep-all; }
-        /* 광고 영역 스타일 */
-        .ad-container { @apply w-full flex justify-center py-4 bg-gray-50/50 dark:bg-gray-800/30 rounded-xl border border-dashed border-gray-200 dark:border-gray-700; }
+        .ad-container { @apply w-full flex justify-center py-4 bg-gray-100/50 dark:bg-gray-800/30 rounded-xl border border-dashed border-gray-200 dark:border-gray-700; }
+        /* 생애 강조 텍스트 애니메이션 */
+        @keyframes pulse-soft { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
+        .pulse-text { animation: pulse-soft 3s infinite; }
     </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark text-[#0d121b] dark:text-gray-100 min-h-screen">
@@ -39,7 +41,7 @@
     <header class="flex items-center justify-between border-b border-[#e7ebf3] dark:border-gray-800 px-6 lg:px-40 py-4 bg-white dark:bg-background-dark shadow-sm sticky top-0 z-50">
         <div class="flex items-center gap-3 cursor-pointer" onclick="location.reload()">
             <div class="text-primary"><span class="material-symbols-outlined text-3xl">calendar_month</span></div>
-            <h1 class="text-lg font-bold tracking-tight">AgeCalc 만나이 계산기</h1>
+            <h1 class="text-lg font-bold tracking-tight">AgeCalc</h1>
         </div>
         <button onclick="shareSite()" class="hidden md:flex items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold shadow-md hover:bg-blue-700 transition-all active:scale-95">
             결과 공유하기
@@ -47,14 +49,9 @@
     </header>
 
     <main class="flex-1 flex flex-col items-center">
-        <div class="w-full max-w-[1000px] px-6 mt-8">
+        <div class="w-full max-w-[1000px] px-6 mt-6">
             <div class="ad-container min-h-[100px]">
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-8606694581555602"
-                     data-ad-slot="1234567890" 
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
+                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8606694581555602" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
                 <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
             </div>
         </div>
@@ -62,136 +59,163 @@
         <section id="input-section" class="w-full max-w-[1200px] px-6 py-12 flex flex-col lg:flex-row gap-12 items-center justify-center">
             <div class="flex-1 space-y-6 text-center lg:text-left lg:min-w-[600px]">
                 <h2 class="text-4xl md:text-5xl lg:text-6xl font-black leading-[1.2] text-gray-900 dark:text-white keep-all">
-                    당신의 진짜 나이,<br>
-                    <span class="text-primary whitespace-nowrap">만 나이를 확인하세요</span>
+                    당신이 지나온 <span class="text-primary">찬란한 시간,</span><br>
+                    정확하게 계산해 드립니다
                 </h2>
                 <p class="text-lg text-gray-600 dark:text-gray-400 keep-all max-w-[500px] mx-auto lg:mx-0">
-                    대한민국 공식 법적 기준에 맞춘 정확한 나이 계산기입니다. 생일만 입력하면 즉시 확인 가능합니다.
+                    단순한 나이 계산을 넘어, 당신이 세상에 태어난 순간부터 오늘까지의 모든 시간을 분석합니다.
                 </p>
-                <div class="flex items-center justify-center lg:justify-start gap-2 px-3 py-1 bg-primary/10 w-fit rounded-full text-primary font-semibold text-xs mx-auto lg:mx-0">
-                    <span class="material-symbols-outlined text-sm">verified</span> 대한민국 정부 공식 기준 적용
+                <div class="flex items-center justify-center lg:justify-start gap-2 px-3 py-1 bg-green-100 dark:bg-green-900/30 w-fit rounded-full text-green-600 dark:text-green-400 font-semibold text-xs mx-auto lg:mx-0">
+                    <span class="material-symbols-outlined text-sm">verified</span> 2026년 최신 만나이 법 규정 준수
                 </div>
             </div>
 
             <div class="w-full lg:w-[450px] bg-white dark:bg-gray-900 rounded-2xl shadow-2xl p-8 border border-gray-100 dark:border-gray-800">
-                <div class="mb-6">
-                    <h3 class="text-xl font-bold mb-1">생년월일 입력</h3>
-                    <p class="text-sm text-gray-500">정확한 계산을 위해 생일을 선택해 주세요.</p>
-                </div>
+                <div class="mb-6"><h3 class="text-xl font-bold mb-1">생년월일 선택</h3></div>
                 <div class="space-y-6">
                     <div class="flex flex-col gap-2">
-                        <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">출생 연도</span>
+                        <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">태어난 연도</span>
                         <input id="birth-year" class="form-input w-full rounded-lg border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 h-14 px-4 focus:ring-primary" placeholder="예: 1995" type="number"/>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div class="flex flex-col gap-2">
                             <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">월</span>
                             <select id="birth-month" class="form-select w-full rounded-lg border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 h-14 px-4">
-                                <option value="">선택</option>
-                                <script>
-                                    for(let i=1; i<=12; i++) document.write(`<option value="${i}">${i}월</option>`);
-                                </script>
+                                <script>for(let i=1; i<=12; i++) document.write(`<option value="${i}">${i}월</option>`);</script>
                             </select>
                         </div>
                         <div class="flex flex-col gap-2">
                             <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">일</span>
                             <select id="birth-day" class="form-select w-full rounded-lg border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 h-14 px-4">
-                                <option value="">선택</option>
-                                <script>
-                                    for(let i=1; i<=31; i++) document.write(`<option value="${i}">${i}일</option>`);
-                                </script>
+                                <script>for(let i=1; i<=31; i++) document.write(`<option value="${i}">${i}일</option>`);</script>
                             </select>
                         </div>
                     </div>
                     <button onclick="calculateAge()" class="w-full bg-primary hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg flex items-center justify-center gap-2 transition-all active:scale-95">
-                        <span>내 나이 계산하기</span>
-                        <span class="material-symbols-outlined">arrow_forward</span>
+                        <span>나의 생애 기록 확인하기</span>
+                        <span class="material-symbols-outlined">analytics</span>
                     </button>
                 </div>
             </div>
         </section>
 
         <section id="result-section" class="hidden w-full max-w-[960px] px-6 py-12">
-            <div class="ad-container min-h-[100px] mb-10">
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-8606694581555602"
-                     data-ad-slot="1234567890"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
-
-            <div class="text-center mb-10">
-                <span class="inline-block px-4 py-1.5 bg-primary/10 text-primary text-xs font-bold uppercase rounded-full mb-4">계산 결과</span>
-                <h1 class="text-3xl md:text-5xl font-extrabold mb-2 text-gray-900 dark:text-white">현재 당신의 만 나이는...</h1>
-                <p id="main-result" class="text-primary text-5xl md:text-7xl font-black mt-4"></p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 text-gray-900 dark:text-white">
-                <div class="rounded-xl p-8 bg-white dark:bg-[#1a2133] border border-[#cfd7e7] dark:border-[#2d3748] shadow-sm text-center">
-                    <p class="text-primary/70 font-medium mb-2">총 개월 수</p>
-                    <p id="total-months" class="text-3xl font-bold"></p>
-                </div>
-                <div class="rounded-xl p-8 bg-white dark:bg-[#1a2133] border border-[#cfd7e7] dark:border-[#2d3748] shadow-sm text-center">
-                    <p class="text-primary/70 font-medium mb-2">총 주수</p>
-                    <p id="total-weeks" class="text-3xl font-bold"></p>
-                </div>
-                <div class="rounded-xl p-8 bg-white dark:bg-[#1a2133] border border-[#cfd7e7] dark:border-[#2d3748] shadow-sm text-center">
-                    <p class="text-primary/70 font-medium mb-2">총 일수</p>
-                    <p id="total-days" class="text-3xl font-bold"></p>
+            <div class="text-center mb-12">
+                <span class="inline-block px-4 py-1.5 bg-primary/10 text-primary text-xs font-bold uppercase rounded-full mb-4">Life Journey Analysis</span>
+                <h2 class="text-2xl md:text-3xl font-bold mb-4 text-gray-600 dark:text-gray-400">당신은 지금까지 이만큼 살아왔습니다</h2>
+                
+                <div class="bg-white dark:bg-gray-900 rounded-3xl p-8 md:p-12 shadow-inner border border-gray-100 dark:border-gray-800 mb-8 overflow-hidden relative">
+                    <div class="absolute top-0 left-0 w-2 h-full bg-primary"></div>
+                    <p id="detailed-period" class="text-3xl md:text-5xl lg:text-6xl font-black text-gray-900 dark:text-white leading-tight keep-all">
+                        </p>
+                    <p id="main-age-result" class="text-primary text-xl md:text-2xl font-bold mt-6 pulse-text"></p>
                 </div>
             </div>
 
-            <div class="flex flex-col items-center gap-6">
-                <button onclick="shareSite()" class="flex items-center gap-3 rounded-xl h-14 px-10 bg-white border-2 border-primary text-primary text-lg font-bold shadow-md hover:bg-gray-50 transition-all active:scale-95">
-                    <span class="material-symbols-outlined">share</span><span>결과 공유하기</span>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="rounded-2xl p-6 bg-white dark:bg-[#1a2133] border border-[#cfd7e7] dark:border-[#2d3748] text-center">
+                    <p class="text-sm font-bold text-primary/70 uppercase mb-2">Total Months</p>
+                    <p id="total-months" class="text-3xl font-black"></p>
+                </div>
+                <div class="rounded-2xl p-6 bg-white dark:bg-[#1a2133] border border-[#cfd7e7] dark:border-[#2d3748] text-center">
+                    <p class="text-sm font-bold text-primary/70 uppercase mb-2">Total Weeks</p>
+                    <p id="total-weeks" class="text-3xl font-black"></p>
+                </div>
+                <div class="rounded-2xl p-6 bg-white dark:bg-[#1a2133] border border-[#cfd7e7] dark:border-[#2d3748] text-center">
+                    <p class="text-sm font-bold text-primary/70 uppercase mb-2">Total Days</p>
+                    <p id="total-days" class="text-3xl font-black"></p>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4">
+                <button onclick="shareSite()" class="w-full md:w-auto flex items-center justify-center gap-3 rounded-xl h-14 px-10 bg-white border-2 border-primary text-primary text-lg font-bold hover:bg-gray-50 transition-all">
+                    <span class="material-symbols-outlined">share</span><span>결과 공유</span>
                 </button>
-                <button onclick="location.reload()" class="flex items-center gap-3 rounded-xl h-14 px-10 bg-primary text-white text-lg font-bold shadow-lg hover:scale-[1.02] transition-all">
-                    <span class="material-symbols-outlined">refresh</span><span>다시 계산하기</span>
+                <button onclick="location.reload()" class="w-full md:w-auto flex items-center justify-center gap-3 rounded-xl h-14 px-10 bg-primary text-white text-lg font-bold shadow-lg hover:scale-[1.02] transition-all">
+                    <span class="material-symbols-outlined">refresh</span><span>다시 계산</span>
                 </button>
+            </div>
+        </section>
+
+        <section class="w-full max-w-[1000px] px-6 py-16 border-t border-gray-200 dark:border-gray-800">
+            <h3 class="text-2xl font-bold mb-8 text-center">만 나이와 생애 주기 가이드</h3>
+            <div class="grid md:grid-cols-2 gap-8 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+                <div class="space-y-4">
+                    <h4 class="font-bold text-gray-900 dark:text-white text-lg">만 나이 계산법이란?</h4>
+                    <p>우리나라가 2023년부터 공식화한 '만 나이'는 태어난 날을 0살로 시작하여 생일이 지날 때마다 1살씩 더하는 방식입니다. 이는 전 세계 대부분의 국가에서 통용되는 국제 표준 방식입니다.</p>
+                </div>
+                <div class="space-y-4">
+                    <h4 class="font-bold text-gray-900 dark:text-white text-lg">왜 이 계산기가 필요한가요?</h4>
+                    <p>법률, 행정, 계약 등 모든 공식 문서에서는 이제 만 나이만을 사용합니다. 보험료 산정이나 연금 수령 시기, 정년 계산 등 정확한 생애 주기를 파악하는 것은 현대인의 필수 상식입니다.</p>
+                </div>
             </div>
         </section>
     </main>
 
-    <footer class="bg-white dark:bg-background-dark border-t border-gray-200 dark:border-gray-800 py-10 px-6 lg:px-40 text-center">
+    <footer class="bg-white dark:bg-background-dark border-t border-gray-200 dark:border-gray-800 py-10 px-6 text-center">
+        <p class="text-xs text-gray-400 mb-2">AgeCalc: Your Life Journey Tracker</p>
         <p class="text-sm text-gray-500">© 2026 AgeCalc International. 모든 권리 보유.</p>
     </footer>
 </div>
 
 <script>
-    let finalAgeText = "";
+    let finalShareText = "";
     function calculateAge() {
-        const year = document.getElementById('birth-year').value;
-        const month = document.getElementById('birth-month').value;
-        const day = document.getElementById('birth-day').value;
-        if(!year || !month || !day) { alert("생년월일을 모두 입력해 주세요!"); return; }
-        const birthDate = new Date(year, month - 1, day);
-        const today = new Date();
-        if (birthDate > today) { alert("미래 날짜는 입력할 수 없습니다."); return; }
-        let age = today.getFullYear() - birthDate.getFullYear();
-        const m = today.getMonth() - birthDate.getMonth();
-        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) { age--; }
-        const diffTime = Math.abs(today - birthDate);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        const diffWeeks = Math.floor(diffDays / 7);
-        const diffMonths = (today.getFullYear() - birthDate.getFullYear()) * 12 + (today.getMonth() - birthDate.getMonth());
+        const y = parseInt(document.getElementById('birth-year').value);
+        const m = parseInt(document.getElementById('birth-month').value);
+        const d = parseInt(document.getElementById('birth-day').value);
+
+        if(!y || !m || !d) { alert("날짜를 정확히 입력해주세요!"); return; }
+
+        const birth = new Date(y, m - 1, d);
+        const now = new Date();
+        if(birth > now) { alert("미래에서 오셨나요? :)"); return; }
+
+        // 상세 기간 계산 (년, 월, 일)
+        let diffY = now.getFullYear() - birth.getFullYear();
+        let diffM = now.getMonth() - birth.getMonth();
+        let diffD = now.getDate() - birth.getDate();
+
+        if (diffD < 0) {
+            diffM--;
+            const lastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+            diffD += lastMonth.getDate();
+        }
+        if (diffM < 0) {
+            diffY--;
+            diffM += 12;
+        }
+
+        // 전체 통계
+        const diffTime = Math.abs(now - birth);
+        const totalD = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        const totalW = Math.floor(totalD / 7);
+        const totalM = (now.getFullYear() - birth.getFullYear()) * 12 + (now.getMonth() - birth.getMonth());
+
+        // UI 업데이트
         document.getElementById('input-section').classList.add('hidden');
         document.getElementById('result-section').classList.remove('hidden');
-        finalAgeText = `만 ${age}세`;
-        document.getElementById('main-result').innerText = finalAgeText;
-        document.getElementById('total-months').innerText = `${diffMonths.toLocaleString()}개월`;
-        document.getElementById('total-weeks').innerText = `${diffWeeks.toLocaleString()}주`;
-        document.getElementById('total-days').innerText = `${diffDays.toLocaleString()}일`;
+        
+        document.getElementById('detailed-period').innerHTML = 
+            `<span class="text-primary">${diffY}년</span>, 
+             <span class="text-primary">${diffM}개월</span>, 
+             <span class="text-primary">${diffD}일</span> 동안의 기록`;
+        
+        document.getElementById('main-age-result').innerText = `공식 만나이: 만 ${diffY}세`;
+        document.getElementById('total-months').innerText = totalM.toLocaleString();
+        document.getElementById('total-weeks').innerText = totalW.toLocaleString();
+        document.getElementById('total-days').innerText = totalD.toLocaleString();
+
+        finalShareText = `나는 지금까지 ${diffY}년 ${diffM}개월 ${diffD}일 동안 살았어! 너도 확인해봐.`;
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
     async function shareSite() {
         const url = window.location.href;
-        const shareText = finalAgeText ? `내 진짜 나이는 ${finalAgeText}야! 너도 확인해봐.` : '내 진짜 나이는 몇 살일까? 정확한 만나이를 확인해보세요!';
         if (navigator.share) {
-            try { await navigator.share({ title: 'AgeCalc 만나이 계산기', text: shareText, url: url }); }
-            catch (err) { navigator.clipboard.writeText(url); alert("사이트 주소가 복사되었습니다!"); }
-        } else { navigator.clipboard.writeText(url); alert("사이트 주소가 복사되었습니다!"); }
+            try { await navigator.share({ title: 'AgeCalc 생애 계산기', text: finalShareText, url: url }); }
+            catch (err) { navigator.clipboard.writeText(url); alert("주소가 복사되었습니다!"); }
+        } else { navigator.clipboard.writeText(url); alert("주소가 복사되었습니다!"); }
     }
 </script>
 </body>
