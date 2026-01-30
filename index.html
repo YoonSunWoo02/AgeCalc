@@ -4,6 +4,9 @@
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>AgeCalc - 정확한 만나이 계산기</title>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8606694581555602" crossorigin="anonymous"></script>
+
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -26,6 +29,8 @@
         body { font-family: "Inter", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif }
         .material-symbols-outlined { font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24 }
         .keep-all { word-break: keep-all; break-word: keep-all; }
+        /* 광고 영역 스타일 */
+        .ad-container { @apply w-full flex justify-center py-4 bg-gray-50/50 dark:bg-gray-800/30 rounded-xl border border-dashed border-gray-200 dark:border-gray-700; }
     </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark text-[#0d121b] dark:text-gray-100 min-h-screen">
@@ -36,10 +41,24 @@
             <div class="text-primary"><span class="material-symbols-outlined text-3xl">calendar_month</span></div>
             <h1 class="text-lg font-bold tracking-tight">AgeCalc 만나이 계산기</h1>
         </div>
-      
+        <button onclick="shareSite()" class="hidden md:flex items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold shadow-md hover:bg-blue-700 transition-all active:scale-95">
+            결과 공유하기
+        </button>
     </header>
 
     <main class="flex-1 flex flex-col items-center">
+        <div class="w-full max-w-[1000px] px-6 mt-8">
+            <div class="ad-container min-h-[100px]">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-8606694581555602"
+                     data-ad-slot="1234567890" 
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+            </div>
+        </div>
+
         <section id="input-section" class="w-full max-w-[1200px] px-6 py-12 flex flex-col lg:flex-row gap-12 items-center justify-center">
             <div class="flex-1 space-y-6 text-center lg:text-left lg:min-w-[600px]">
                 <h2 class="text-4xl md:text-5xl lg:text-6xl font-black leading-[1.2] text-gray-900 dark:text-white keep-all">
@@ -93,6 +112,16 @@
         </section>
 
         <section id="result-section" class="hidden w-full max-w-[960px] px-6 py-12">
+            <div class="ad-container min-h-[100px] mb-10">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-8606694581555602"
+                     data-ad-slot="1234567890"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+            </div>
+
             <div class="text-center mb-10">
                 <span class="inline-block px-4 py-1.5 bg-primary/10 text-primary text-xs font-bold uppercase rounded-full mb-4">계산 결과</span>
                 <h1 class="text-3xl md:text-5xl font-extrabold mb-2 text-gray-900 dark:text-white">현재 당신의 만 나이는...</h1>
@@ -132,86 +161,37 @@
 
 <script>
     let finalAgeText = "";
-
     function calculateAge() {
         const year = document.getElementById('birth-year').value;
         const month = document.getElementById('birth-month').value;
         const day = document.getElementById('birth-day').value;
-
-        if(!year || !month || !day) {
-            alert("생년월일을 모두 입력해 주세요!");
-            return;
-        }
-
+        if(!year || !month || !day) { alert("생년월일을 모두 입력해 주세요!"); return; }
         const birthDate = new Date(year, month - 1, day);
         const today = new Date();
-
-        if (birthDate > today) {
-            alert("미래 날짜는 입력할 수 없습니다.");
-            return;
-        }
-
+        if (birthDate > today) { alert("미래 날짜는 입력할 수 없습니다."); return; }
         let age = today.getFullYear() - birthDate.getFullYear();
         const m = today.getMonth() - birthDate.getMonth();
-        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-            age--;
-        }
-
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) { age--; }
         const diffTime = Math.abs(today - birthDate);
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         const diffWeeks = Math.floor(diffDays / 7);
         const diffMonths = (today.getFullYear() - birthDate.getFullYear()) * 12 + (today.getMonth() - birthDate.getMonth());
-
         document.getElementById('input-section').classList.add('hidden');
         document.getElementById('result-section').classList.remove('hidden');
-        
         finalAgeText = `만 ${age}세`;
         document.getElementById('main-result').innerText = finalAgeText;
         document.getElementById('total-months').innerText = `${diffMonths.toLocaleString()}개월`;
         document.getElementById('total-weeks').innerText = `${diffWeeks.toLocaleString()}주`;
         document.getElementById('total-days').innerText = `${diffDays.toLocaleString()}일`;
-
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-
     async function shareSite() {
         const url = window.location.href;
         const shareText = finalAgeText ? `내 진짜 나이는 ${finalAgeText}야! 너도 확인해봐.` : '내 진짜 나이는 몇 살일까? 정확한 만나이를 확인해보세요!';
-        
-        // 1. 클립보드 복사 함수 정의
-        const copyToClipboard = async (text) => {
-            try {
-                await navigator.clipboard.writeText(text);
-                alert("사이트 주소가 복사되었습니다! 원하는 곳에 붙여넣으세요.");
-            } catch (err) {
-                // 구형 브라우저 대응
-                const textArea = document.createElement("textarea");
-                textArea.value = text;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                alert("사이트 주소가 복사되었습니다!");
-            }
-        };
-
-        // 2. 공유 기능 시도
         if (navigator.share) {
-            try {
-                await navigator.share({
-                    title: 'AgeCalc 만나이 계산기',
-                    text: shareText,
-                    url: url
-                });
-            } catch (err) {
-                // 사용자가 취소했거나 보안 문제로 실패한 경우 복사로 대체
-                console.log("공유 API 실패, 복사로 전환합니다.");
-                await copyToClipboard(url);
-            }
-        } else {
-            // 공유 기능을 아예 지원하지 않는 환경
-            await copyToClipboard(url);
-        }
+            try { await navigator.share({ title: 'AgeCalc 만나이 계산기', text: shareText, url: url }); }
+            catch (err) { navigator.clipboard.writeText(url); alert("사이트 주소가 복사되었습니다!"); }
+        } else { navigator.clipboard.writeText(url); alert("사이트 주소가 복사되었습니다!"); }
     }
 </script>
 </body>
